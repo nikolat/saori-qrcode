@@ -7,10 +7,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Setup cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -21,17 +21,14 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       
       - name: Setup toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          target: i686-pc-windows-msvc
+          targets: i686-pc-windows-msvc
           components: rustfmt, clippy
           
       - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --target=i686-pc-windows-msvc
+        run: cargo build --release --target=i686-pc-windows-msvc
       
       - name: Prepare for upload
         run: |
@@ -42,7 +39,7 @@ jobs:
           copy LICENSE artifact/saori-qrcode/LICENSE
       
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: saori-qrcode
           path: artifact/

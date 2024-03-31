@@ -9,10 +9,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -23,18 +23,14 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Setup toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          target: i686-pc-windows-msvc
+          targets: i686-pc-windows-msvc
           components: rustfmt, clippy
       
       - name: Check
-        uses: actions-rs/cargo@v1
-        with:
-            command: check
+        run: cargo check
       
       - name: Test
-        uses: actions-rs/cargo@v1
-        with:
-            command: test
+        run: cargo test
