@@ -24,7 +24,7 @@ pub fn execute(path: &str, request: &SaoriRequest, response: &mut SaoriResponse)
         path.pop();
     }
 
-    if let Some(func) = args.get(0) {
+    if let Some(func) = args.first() {
         match func.as_str() {
             "image" => {
                 if let (Some(text), Some(output_path_str)) = (args.get(1), args.get(2)) {
